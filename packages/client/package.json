@@ -1,0 +1,11 @@
+{
+  "name": "@repo/client",
+  "version": "0.0.0",
+  "private": true,
+  "main": "index.ts",
+  "types": "index.ts",
+  "devDependencies": {
+    "typescript": "^5.9.2",
+    "@repo/config": "workspace:*"
+  }
+}
