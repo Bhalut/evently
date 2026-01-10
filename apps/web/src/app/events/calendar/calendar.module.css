@@ -1,0 +1,320 @@
+.container {
+  padding: var(--spacing-xl);
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: var(--spacing-xl);
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.navigation {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.navButton {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.navButton svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-text-main);
+}
+
+.navButton:hover {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.navButton:hover svg {
+  color: white;
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--color-text-main);
+  min-width: 250px;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-sm);
+}
+
+.todayButton {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.todayButton:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
+}
+
+.viewToggle {
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-md);
+  background: var(--color-accent);
+  color: white;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.viewToggle:hover {
+  background: var(--color-accent-hover);
+  color: white;
+}
+
+.calendar {
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  animation: slideUp 0.6s ease-out 0.1s both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background: linear-gradient(135deg, var(--color-accent), #8b5cf6);
+  padding: var(--spacing-sm) 0;
+}
+
+.weekday {
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.875rem;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.day {
+  aspect-ratio: 1;
+  padding: var(--spacing-sm);
+  border: 1px solid var(--color-border-subtle);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.day:hover {
+  background: var(--color-accent-subtle);
+}
+
+.emptyDay {
+  aspect-ratio: 1;
+  background: var(--bg-default);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.dayNumber {
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  transition: all 0.2s ease;
+}
+
+.today {
+  background: var(--color-accent-subtle);
+}
+
+.today .dayNumber {
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+}
+
+.hasEvents {
+  cursor: pointer;
+}
+
+.eventDots {
+  display: flex;
+  gap: 4px;
+  margin-top: auto;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.eventDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  animation: dotPop 0.3s ease-out both;
+}
+
+@keyframes dotPop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+.moreIndicator {
+  font-size: 0.65rem;
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.tooltip {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  padding: var(--spacing-sm);
+  min-width: 200px;
+  animation: tooltipIn 0.2s ease-out;
+}
+
+@keyframes tooltipIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+.tooltipEvent {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  padding: var(--spacing-xs);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: background 0.2s ease;
+}
+
+.tooltipEvent:hover {
+  background: var(--color-accent-subtle);
+}
+
+.tooltipTime {
+  font-size: 0.75rem;
+  color: var(--color-accent);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tooltipName {
+  font-size: 0.85rem;
+  color: var(--color-text-main);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.fab {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+  transition: all 0.3s ease;
+  z-index: 100;
+}
+
+.fab svg {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.fab:hover {
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+  
+  .title {
+    font-size: 1.5rem;
+    min-width: auto;
+  }
+  
+  .day {
+    padding: var(--spacing-xs);
+  }
+  
+  .dayNumber {
+    font-size: 0.8rem;
+  }
+  
+  .today .dayNumber {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+  
+  .tooltip {
+    display: none;
+  }
+}
