@@ -2,6 +2,7 @@
   padding: var(--spacing-xl);
   max-width: 1200px;
   margin: 0 auto;
+  min-height: 100dvh;
 }
 
 .header {
@@ -9,12 +10,27 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: var(--spacing-xl);
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.filterSection {
+  margin-bottom: var(--spacing-lg);
+  animation: fadeIn 0.6s ease-out 0.1s both;
 }
 
 .title {
   font-size: 2rem;
   font-weight: 700;
   color: var(--color-text-main);
+  background: linear-gradient(135deg, var(--color-text-main) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .headerActions {
@@ -24,30 +40,100 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: var(--spacing-lg);
+  perspective: 1000px;
 }
 
+/* Card with 3D hover effect */
 .card {
-  background-color: var(--color-surface);
+  --card-rotation: 0deg;
+  --glow-opacity: 0;
+  
+  background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
-  transition:
-    transform var(--transition-fast),
-    box-shadow var(--transition-fast);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   position: relative;
   text-decoration: none;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: cardEntrance 0.6s ease-out both;
+}
+
+.card:nth-child(1) { animation-delay: 0.1s; }
+.card:nth-child(2) { animation-delay: 0.15s; }
+.card:nth-child(3) { animation-delay: 0.2s; }
+.card:nth-child(4) { animation-delay: 0.25s; }
+.card:nth-child(5) { animation-delay: 0.3s; }
+.card:nth-child(6) { animation-delay: 0.35s; }
+
+@keyframes cardEntrance {
+  from {
+    opacity: 0;
+    transform: translateY(30px) rotateX(-10deg);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+/* Gradient glow effect behind card */
+.card::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(135deg, var(--color-accent), #8b5cf6, #06b6d4);
+  border-radius: calc(var(--radius-lg) + 2px);
+  opacity: var(--glow-opacity);
+  z-index: -1;
+  transition: opacity 0.4s ease;
+}
+
+/* Inner card background for glow effect */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  z-index: -1;
 }
 
 .card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+  transform: translateY(-8px) rotateX(2deg) scale(1.02);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.15),
+    0 0 30px rgba(99, 102, 241, 0.2);
   border-color: var(--color-accent);
+  --glow-opacity: 0.6;
+}
+
+/* Shimmer effect on hover */
+.card .cardContent::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.card:hover .cardContent::before {
+  left: 100%;
 }
 
 .cardLink {
@@ -60,29 +146,60 @@
 
 .cardContent {
   flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Date badge */
+.eventDate {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  background: linear-gradient(135deg, var(--color-accent-subtle), transparent);
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-full);
+  color: var(--color-accent);
+  font-weight: 600;
+  font-size: 0.8rem;
+  margin-bottom: var(--spacing-md);
+  transition: all 0.3s ease;
+}
+
+.card:hover .eventDate {
+  background: var(--color-accent);
+  color: white;
+  transform: scale(1.05);
 }
 
 .eventName {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-bottom: var(--spacing-xs);
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: var(--spacing-sm);
   color: var(--color-text-main);
+  transition: color 0.3s ease;
+  line-height: 1.3;
 }
 
-.eventDate {
-  color: var(--color-accent);
-  font-weight: 500;
-  font-size: 0.875rem;
-  margin-bottom: var(--spacing-sm);
+.card:hover .eventName {
+  background: linear-gradient(135deg, var(--color-text-main) 0%, var(--color-accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .eventLocation {
   color: var(--color-text-muted);
-  font-size: 0.875rem;
+  font-size: 0.9rem;
   display: flex;
   align-items: center;
   gap: 0.5rem;
   margin-bottom: var(--spacing-md);
+  transition: color 0.3s ease;
+}
+
+.card:hover .eventLocation {
+  color: var(--color-text-main);
 }
 
 .cardActions {
@@ -91,17 +208,28 @@
   margin-top: auto;
   padding-top: var(--spacing-md);
   border-top: 1px solid var(--color-border-subtle);
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+.card:hover .cardActions {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 .cardActionBtn {
-  font-size: 0.75rem;
-  padding: 0.4rem 0.8rem;
+  flex: 1;
+  font-size: 0.8rem;
+  padding: 0.5rem 1rem;
   border-radius: var(--radius-md);
   font-weight: 600;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.4rem;
-  transition: all var(--transition-fast);
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .editBtn {
@@ -111,7 +239,9 @@
 }
 
 .editBtn:hover {
-  background-color: var(--color-accent-subtle);
+  background: var(--color-accent);
+  color: white;
+  transform: scale(1.05);
 }
 
 .deleteBtn {
@@ -121,41 +251,94 @@
 }
 
 .deleteBtn:hover {
-  background-color: var(--color-error-subtle);
+  background: var(--color-error);
+  color: white;
+  transform: scale(1.05);
+}
+
+.deleteBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
 
 .emptyState {
   text-align: center;
-  padding: var(--spacing-xl);
+  padding: var(--spacing-2xl);
   color: var(--color-text-muted);
   grid-column: 1 / -1;
+  font-size: 1.1rem;
+  animation: fadeIn 0.6s ease-out;
 }
 
+/* Floating Action Button */
 .fab {
   position: fixed;
   bottom: 2rem;
   right: 2rem;
-  width: 3.5rem;
-  height: 3.5rem;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
-  background-color: var(--color-accent);
+  background: linear-gradient(135deg, var(--color-accent) 0%, #8b5cf6 100%);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: var(--shadow-lg);
-  transition:
-    background-color var(--transition-fast),
-    transform var(--transition-fast);
+  box-shadow: 
+    0 4px 20px rgba(99, 102, 241, 0.4),
+    0 0 0 0 rgba(99, 102, 241, 0.3);
+  transition: all 0.3s ease;
   z-index: 100;
+  animation: fabPulse 2s ease-in-out infinite;
+}
+
+@keyframes fabPulse {
+  0%, 100% { box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4), 0 0 0 0 rgba(99, 102, 241, 0.3); }
+  50% { box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4), 0 0 0 10px rgba(99, 102, 241, 0); }
 }
 
 .fab:hover {
-  background-color: var(--color-accent-hover);
-  transform: scale(1.05);
+  transform: scale(1.1) rotate(90deg);
+  box-shadow: 0 8px 30px rgba(99, 102, 241, 0.5);
 }
 
 .fabIcon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 1.75rem;
+  height: 1.75rem;
+  transition: transform 0.3s ease;
 }
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: var(--radius-md);
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.skeletonCard {
+  pointer-events: none;
+}
+
+.skeletonTitle {
+  height: 1.5rem;
+  width: 70%;
+  margin-bottom: var(--spacing-sm);
+}
+
+.skeletonText {
+  height: 1rem;
+  width: 50%;
+  margin-bottom: var(--spacing-xs);
+}
+

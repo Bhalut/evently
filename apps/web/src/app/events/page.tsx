@@ -1,10 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api, Event, ApiError } from "@/lib/api";
+import { SkeletonGrid } from "@/components/LoadingSpinner";
+import { SearchBar, FilterChips } from "@/components/SearchBar";
 import styles from "./events.module.css";
+
+const TIME_FILTERS = [
+  { id: "all", label: "All Events", active: true },
+  { id: "upcoming", label: "Upcoming", active: false },
+  { id: "thisWeek", label: "This Week", active: false },
+  { id: "thisMonth", label: "This Month", active: false },
+];
 
 export default function EventsPage() {
   const router = useRouter();
@@ -12,6 +21,8 @@ export default function EventsPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
   const [isDeleting, setIsDeleting] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filters, setFilters] = useState(TIME_FILTERS);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -41,7 +52,7 @@ export default function EventsPage() {
     setIsDeleting(id);
     try {
       await api.delete(`/events/${id}`);
-      setEvents(events.filter((e) => e.id !== id));
+      setEvents(events.filter((ev) => ev.id !== id));
     } catch (err) {
       console.error("Failed to delete event", err);
       alert("Failed to delete event");
@@ -56,13 +67,66 @@ export default function EventsPage() {
     router.push(`/events/${id}/edit`);
   };
 
+  const handleFilterToggle = (id: string) => {
+    setFilters(filters.map((f) => ({ ...f, active: f.id === id })));
+  };
+
+  const filteredEvents = useMemo(() => {
+    let result = events;
+
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      result = result.filter(
+        (event) =>
+          event.name.toLowerCase().includes(query) ||
+          event.place?.toLowerCase().includes(query),
+      );
+    }
+
+    const activeFilter = filters.find((f) => f.active)?.id || "all";
+    const now = new Date();
+    const startOfWeek = new Date(now);
+    startOfWeek.setDate(now.getDate() - now.getDay());
+    const endOfWeek = new Date(startOfWeek);
+    endOfWeek.setDate(startOfWeek.getDate() + 7);
+    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const endOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+
+    switch (activeFilter) {
+      case "upcoming":
+        result = result.filter((event) => new Date(event.date) >= now);
+        break;
+      case "thisWeek":
+        result = result.filter((event) => {
+          const eventDate = new Date(event.date);
+          return eventDate >= startOfWeek && eventDate < endOfWeek;
+        });
+        break;
+      case "thisMonth":
+        result = result.filter((event) => {
+          const eventDate = new Date(event.date);
+          return eventDate >= startOfMonth && eventDate <= endOfMonth;
+        });
+        break;
+    }
+
+    return result;
+  }, [events, searchQuery, filters]);
+
   if (isLoading) {
     return (
       <div className={styles.container}>
         <div className={styles.header}>
           <h1 className={styles.title}>Events</h1>
+          <div className={styles.headerActions}>
+            <Link href="/events/new" className="btn btn-primary">
+              Add Event
+            </Link>
+          </div>
         </div>
-        <div>Loading events...</div>
+        <div className={styles.grid}>
+          <SkeletonGrid count={6} />
+        </div>
       </div>
     );
   }
@@ -72,10 +136,18 @@ export default function EventsPage() {
       <div className={styles.header}>
         <h1 className={styles.title}>Events</h1>
         <div className={styles.headerActions}>
+          <SearchBar value={searchQuery} onChange={setSearchQuery} />
+          <Link href="/events/calendar" className="btn btn-outline">
+            Calendar
+          </Link>
           <Link href="/events/new" className="btn btn-primary">
             Add Event
           </Link>
         </div>
+      </div>
+
+      <div className={styles.filterSection}>
+        <FilterChips filters={filters} onToggle={handleFilterToggle} />
       </div>
 
       {error && (
@@ -85,24 +157,25 @@ export default function EventsPage() {
       )}
 
       <div className={styles.grid}>
-        {events.length === 0 && !error ? (
+        {filteredEvents.length === 0 && !error ? (
           <div className={styles.emptyState}>
-            No events found. Create your first event!
+            {searchQuery || filters.find((f) => f.active)?.id !== "all"
+              ? "No events match your filters. Try adjusting your search."
+              : "No events found. Create your first event!"}
           </div>
         ) : (
-          events.map((event) => (
+          filteredEvents.map((event) => (
             <div key={event.id} className={styles.card}>
               <Link href={`/events/${event.id}`} className={styles.cardLink}>
                 <div className={styles.cardContent}>
-                  <h2 className={styles.eventName}>{event.name}</h2>
                   <div className={styles.eventDate}>
                     {new Date(event.date).toLocaleDateString(undefined, {
-                      weekday: "long",
-                      year: "numeric",
-                      month: "long",
+                      weekday: "short",
+                      month: "short",
                       day: "numeric",
                     })}
                   </div>
+                  <h2 className={styles.eventName}>{event.name}</h2>
                   <div className={styles.eventLocation}>📍 {event.place}</div>
                 </div>
               </Link>
