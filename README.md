@@ -31,380 +31,74 @@ Evently is a production-ready event management platform featuring a NestJS backe
 - Auto-generated API client
 - Health monitoring endpoints
 
-## Backend Setup (NestJS API)
+## Quick Start
 
 ### Prerequisites
 
 - Node.js v20 or higher
-- pnpm v9 or higher
+- pnpm v9 or higher (`corepack enable`)
 - Docker and Docker Compose
 
-### Step-by-Step Instructions
+### Installation
 
-1. Navigate to the backend directory:
-
-```bash
-cd apps/api
-```
-
-2. Install dependencies:
+1. Clone the repository and install dependencies:
 
 ```bash
+git clone https://github.com/yourusername/evently.git
+cd evently
 pnpm install
 ```
 
-3. Copy environment template:
-
-```bash
-cp .env.example .env
-```
-
-4. Edit `.env` file with your configuration:
-
-- `DATABASE_URL`: PostgreSQL connection string
-- `JWT_SECRET`: Secret key for JWT signing (minimum 8 characters)
-- `PORT`: API server port (default: 3001)
-- `CORS_ORIGIN`: Allowed CORS origins (use `*` for localhost)
-
-5. Start the database:
-
-```bash
-# From project root
-docker compose up -d db
-```
-
-6. Run database migrations:
-
-```bash
-cd apps/api
-pnpm migration:run
-```
-
-7. Start the backend server:
-
-```bash
-cd apps/api
-pnpm dev
-```
-
-The API server will be running at: `http://localhost:3001`
-
-### API Endpoints Available
-
-- `POST /events` - Create a new event
-- `GET /events` - Get all events
-- `GET /events/:id` - Get a specific event by ID
-- `PUT /events/:id` - Update an existing event
-- `DELETE /events/:id` - Delete an event
-- `POST /auth/login` - User login
-- `POST /api/register` - User registration
-
-### API Documentation
-
-Swagger UI is available at: `http://localhost:3001/docs`
-
-OpenAPI JSON specification is available at: `http://localhost:3001/docs-json`
-
-## Frontend Setup (Next.js Web Application)
-
-### Prerequisites
-
-- Node.js v20 or higher
-- pnpm v9 or higher
-
-### Step-by-Step Instructions
-
-1. Navigate to the frontend directory:
-
-```bash
-cd apps/web
-```
-
-2. Install dependencies:
-
-```bash
-pnpm install
-```
-
-3. Copy environment template:
-
-```bash
-cp .env.example .env
-```
-
-4. Edit `.env` file with your configuration:
-
-- `NEXT_PUBLIC_API_URL`: Backend API URL (default: `http://localhost:3001`)
-
-5. Start the frontend server:
-
-```bash
-cd apps/web
-pnpm dev
-```
-
-The web application will be running at: `http://localhost:3000`
-
-### Available Screens
-
-- **Login Screen**: `/login` - Email and Password authentication
-- **Registration Screen**: `/register` - Name, Email, and Password registration
-- **Event List Screen**: `/events` - Display all events with floating add button
-- **Event Detail Screen**: `/events/:id` - View event details with Edit/Delete options
-- **Add/Edit Event Screen**: `/events/new` or `/events/:id/edit` - Create or modify events
-
-## Docker Setup (Alternative)
-
-### Production Mode
-
-```bash
-# From project root
-docker compose up --build
-```
-
-Services will be available at:
-
-- API: `http://localhost:3001`
-- Web: `http://localhost:3002`
-- Database: `localhost:5432`
-
-### Development Mode
-
-```bash
-# From project root
-docker compose up
-```
-
-## API Usage Examples
-
-### Creating an Event
-
-```bash
-curl -X POST http://localhost:3001/events \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Tech Conference 2026",
-    "date": "2026-06-15T09:00:00Z",
-    "description": "Annual technology conference",
-    "place": "San Francisco, CA"
-  }'
-```
-
-### Listing All Events
-
-```bash
-curl http://localhost:3001/events
-```
-
-### Getting a Specific Event
-
-```bash
-curl http://localhost:3001/events/1
-```
-
-### Updating an Event
-
-```bash
-curl -X PUT http://localhost:3001/events/1 \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "Tech Conference 2026 - Updated",
-    "date": "2026-06-16T09:00:00Z",
-    "description": "Annual technology conference",
-    "place": "San Francisco, CA"
-  }'
-```
-
-### Deleting an Event
-
-```bash
-curl -X DELETE http://localhost:3001/events/1
-```
-
-### User Login
-
-```bash
-curl -X POST http://localhost:3001/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{
-    "email": "user@example.com",
-    "password": "password123"
-  }'
-```
-
-### User Registration
-
-```bash
-curl -X POST http://localhost:3001/api/register \
-  -H "Content-Type: application/json" \
-  -d '{
-    "name": "John Doe",
-    "email": "john@example.com",
-    "password": "password123"
-  }'
-```
-
-### Health Check
-
-```bash
-curl http://localhost:3001/health
-```
-
-## Testing
-
-### Backend Tests
-
-```bash
-cd apps/api
-
-# Run unit tests
-pnpm test
-
-# Run tests with coverage
-pnpm test:cov
-
-# Run integration tests (requires test database)
-pnpm test:integration
-```
-
-### Frontend Tests
-
-```bash
-cd apps/web
-
-# Run unit tests
-pnpm test
-
-# Run end-to-end tests with Playwright
-pnpm test:e2e
-```
-
-## Bonus Features
-
-This project includes additional features beyond the minimum requirements:
-
-### 1. Interactive Setup Wizard
-
-**Objective**: Automate initial configuration and setup
-
-**How to Test**:
+2. Run the interactive setup wizard:
 
 ```bash
 ./packages/cli/bin/evently setup
 ```
 
-The wizard will:
+The setup wizard will:
 
-- Generate secure environment variables
-- Create `.env` file automatically
-- Start PostgreSQL database
-- Run migrations
-- Provide next steps
+- Generate environment variables with secure defaults
+- Create a `.env` file with auto-generated JWT secret
+- Start the PostgreSQL database
+- Run database migrations
+- Provide next steps for starting the application
 
-### 2. API Documentation with Swagger UI
-
-**Objective**: Interactive API documentation for developers
-
-**How to Test**:
-
-1. Start the backend: `cd apps/api && pnpm dev`
-2. Open browser: `http://localhost:3001/docs`
-3. Try out endpoints directly in the Swagger UI
-
-### 3. Health Monitoring Endpoints
-
-**Objective**: Real-time service health monitoring
-
-**How to Test**:
+3. Start the development servers:
 
 ```bash
-curl http://localhost:3001/health
+pnpm dev
 ```
 
-Response includes database connectivity status and service health indicators.
+### Access Points
 
-### 4. Structured Logging with Correlation IDs
+Once running, the application is available at:
 
-**Objective**: Distributed tracing for debugging
+| Service           | URL                             | Description           |
+| ----------------- | ------------------------------- | --------------------- |
+| Web Application   | http://localhost:3000           | Next.js frontend      |
+| API Server        | http://localhost:3000           | NestJS backend        |
+| API Documentation | http://localhost:3000/docs      | Swagger UI            |
+| API Specification | http://localhost:3000/docs-json | OpenAPI JSON          |
+| Health Check      | http://localhost:3000/health    | Service health status |
 
-**How to Test**:
+### Manual Setup (Alternative)
 
-1. Make an API request with a custom header:
+If you prefer manual configuration:
 
 ```bash
-curl -H "x-correlation-id: my-custom-id" http://localhost:3001/events
+# Copy environment template
+cp .env.example .env
+# Edit .env with your configuration
+
+# Start database
+docker compose up -d db
+
+# Run migrations
+pnpm --filter api migration:run
+
+# Start development
+pnpm dev
 ```
-
-2. Check API logs - you'll see the correlation ID in log entries
-3. Response includes correlation ID in headers
-
-### 5. Security Hardening
-
-**Objective**: Multiple security layers for production readiness
-
-**How to Test**:
-
-```bash
-# Check security headers
-curl -I http://localhost:3001/health
-
-# Test rate limiting (100 req/min)
-for i in {1..101}; do curl -s http://localhost:3001/health; done
-# Request 101 should return 429 Too Many Requests
-```
-
-Security features include:
-
-- HTTP security headers (Helmet)
-- Rate limiting
-- Content Security Policy
-- CORS configuration
-- Input validation with whitelist mode
-- Password hashing with bcrypt
-
-### 6. Type-Safe API Client
-
-**Objective**: End-to-end TypeScript type safety from backend to frontend
-
-**How to Test**:
-
-1. The frontend uses `@repo/client` package with auto-generated types
-2. Try modifying an API call in `apps/web/src/` - TypeScript will show errors if types don't match
-3. All API responses are fully typed
-
-### 7. Database Migration Management
-
-**Objective**: Controlled database schema changes
-
-**How to Test**:
-
-```bash
-cd apps/api
-
-# Generate a new migration
-pnpm migration:generate -n AddNewField
-
-# Review the generated file in src/database/migrations/
-
-# Run the migration
-pnpm migration:run
-
-# Rollback if needed
-pnpm migration:revert
-```
-
-### 8. Docker Development Mode
-
-**Objective**: Hot-reload development environment in Docker
-
-**How to Test**:
-
-```bash
-# Start with hot-reload
-docker compose -f docker-compose.yml -f docker-compose.dev.yml up
-```
-
-Changes to code will be automatically reflected without rebuilding containers.
 
 ## Project Structure
 
@@ -423,35 +117,92 @@ evently/
 └── docker-compose.yml
 ```
 
-## Technology Stack
+## Development
 
-### Backend
+### Common Commands
 
-- **Framework**: NestJS 11
-- **Language**: TypeScript
-- **Database**: PostgreSQL 16
-- **ORM**: TypeORM
-- **Authentication**: JWT with Passport
-- **Validation**: class-validator and class-transformer
-- **Documentation**: Swagger/OpenAPI
-- **Testing**: Jest with Supertest
+```bash
+# Development
+pnpm dev                    # Start all applications in watch mode
+pnpm --filter api dev       # Start API server only
+pnpm --filter web dev       # Start web application only
 
-### Frontend
+# Building
+pnpm build                  # Build all packages and applications
+pnpm --filter api build     # Build API only
+pnpm --filter web build     # Build web application only
 
-- **Framework**: Next.js 16 with App Router
-- **Language**: TypeScript
-- **Styling**: CSS Modules
-- **API Client**: Auto-generated from OpenAPI spec
-- **Testing**: Jest and Playwright
+# Testing
+pnpm test                   # Run all test suites
+pnpm --filter api test      # Run API tests
+pnpm --filter api test:cov  # Run API tests with coverage
+pnpm --filter api test:integration  # Run integration tests
+pnpm --filter web test:e2e  # Run end-to-end tests
 
-### Infrastructure
+# Code Quality
+pnpm lint                   # Lint all packages
+pnpm check-types            # TypeScript type checking
+pnpm format                 # Format code with Prettier
 
-- **Containerization**: Docker with multi-stage builds
-- **Process Management**: Docker Compose
-- **Logging**: Pino structured JSON logs
-- **Monorepo**: Turborepo with pnpm workspaces
+# Database
+pnpm --filter api migration:generate -n MigrationName  # Generate migration
+pnpm --filter api migration:run                        # Run migrations
+pnpm --filter api migration:revert                     # Revert last migration
+```
 
-## Security Features
+### CLI Tools
+
+The Evently CLI provides utilities for common development tasks:
+
+```bash
+# System health check
+./packages/cli/bin/evently doctor
+
+# Interactive setup wizard
+./packages/cli/bin/evently setup
+
+# Database operations
+./packages/cli/bin/evently db migrate    # Run migrations
+./packages/cli/bin/evently db reset      # Reset database
+./packages/cli/bin/evently db seed       # Seed initial data
+
+# Code generation
+./packages/cli/bin/evently gen api-client       # Update API client
+./packages/cli/bin/evently gen module <name>    # Scaffold new module
+
+# Demo and testing
+./packages/cli/bin/evently demo         # Run automated demonstration
+```
+
+## Architecture
+
+### Technology Stack
+
+**Backend**
+
+- Framework: NestJS 11
+- Database: PostgreSQL 16 with TypeORM
+- Authentication: JWT with Passport
+- Validation: class-validator and class-transformer
+- Documentation: Swagger/OpenAPI
+- Testing: Jest with Supertest
+
+**Frontend**
+
+- Framework: Next.js 16 with App Router
+- Language: TypeScript with strict mode
+- Styling: CSS Modules
+- Testing: Jest and Playwright
+- API Client: Auto-generated from OpenAPI spec
+
+**Infrastructure**
+
+- Monorepo: Turborepo with pnpm workspaces
+- Containerization: Docker with multi-stage builds
+- Logging: Pino structured JSON logs
+- Process Management: Docker Compose
+
+### Security
 
 The platform implements multiple security layers:
 
@@ -463,11 +214,12 @@ The platform implements multiple security layers:
 - **Input Validation**: Automatic DTO validation with whitelist mode
 - **Password Security**: bcrypt hashing with configurable salt rounds
 
-## Database Configuration
+### Database
 
-**TypeORM Configuration**
+**Configuration**
 
-- Migration-based schema management (never uses `synchronize: true`)
+- TypeORM with migration-based schema management
+- Never uses `synchronize: true` to prevent accidental schema changes
 - Auto-discovery of entities from modules
 - Manual migration execution for controlled deployments
 
@@ -476,6 +228,144 @@ The platform implements multiple security layers:
 - Development: `localhost:5432` via docker-compose.yml
 - Test: `localhost:5434` via docker-compose.test.yml
 - Connection string configured in `.env` file
+
+**Migration Workflow**
+
+```bash
+# Generate new migration
+pnpm --filter api migration:generate -n DescriptiveName
+
+# Review generated migration in apps/api/src/database/migrations/
+
+# Run migrations
+pnpm --filter api migration:run
+
+# Rollback if needed
+pnpm --filter api migration:revert
+```
+
+## Testing
+
+### Unit Tests
+
+```bash
+# Run all unit tests
+pnpm test
+
+# Run with coverage (50% threshold enforced)
+pnpm --filter api test:cov
+```
+
+### Integration Tests
+
+Integration tests use a separate ephemeral database on port 5434:
+
+```bash
+# Start test database
+docker compose -f docker-compose.test.yml up -d
+
+# Run integration tests
+pnpm --filter api test:integration
+
+# Cleanup
+docker compose -f docker-compose.test.yml down
+```
+
+### End-to-End Tests
+
+```bash
+# Run E2E tests with Playwright
+pnpm --filter web test:e2e
+```
+
+## Docker
+
+### Development Mode
+
+```bash
+# Standard development
+docker compose up
+
+# With hot-reload
+docker compose -f docker-compose.yml -f docker-compose.dev.yml up
+```
+
+### Production Mode
+
+```bash
+# Build and run production containers
+docker compose up --build
+```
+
+Services are exposed on:
+
+- API: http://localhost:3001
+- Web: http://localhost:3002
+- Database: localhost:5432
+
+## API Usage
+
+### Creating Events
+
+```bash
+curl -X POST http://localhost:3000/events \
+  -H "Content-Type: application/json" \
+  -d '{
+    "name": "Tech Conference 2026",
+    "date": "2026-06-15T09:00:00Z",
+    "description": "Annual technology conference",
+    "place": "San Francisco, CA"
+  }'
+```
+
+### Listing Events
+
+```bash
+curl http://localhost:3000/events
+```
+
+### Health Check
+
+```bash
+curl http://localhost:3000/health
+```
+
+All API responses follow a consistent format:
+
+```json
+{
+  "data": {},
+  "meta": {
+    "correlationId": "unique-request-id",
+    "timestamp": "2026-01-10T16:00:00.000Z"
+  }
+}
+```
+
+## Monorepo Packages
+
+### Internal Packages
+
+- **@repo/cli**: Command-line tools and setup wizard
+- **@repo/client**: Auto-generated type-safe API client
+- **@repo/config**: Shared ESLint and TypeScript configurations
+- **@repo/contracts**: Shared TypeScript type definitions
+- **@repo/logger**: Pino-based structured logging
+- **@repo/ui**: Shared React component library
+
+### Adding Dependencies
+
+```bash
+# Add to specific application
+pnpm --filter api add <package-name>
+pnpm --filter web add <package-name>
+
+# Add to workspace root
+pnpm add -w <package-name>
+
+# Add to specific package
+pnpm --filter @repo/logger add <package-name>
+```
 
 ## Troubleshooting
 
@@ -493,7 +383,7 @@ docker compose down
 docker compose up -d db
 
 # Verify connection string in .env
-cat apps/api/.env | grep DATABASE_URL
+cat .env | grep DATABASE_URL
 ```
 
 ### Build Failures
@@ -529,9 +419,14 @@ lsof -ti:3001 | xargs kill -9
 ### Type Errors
 
 ```bash
-# Run type checking
-cd apps/api && pnpm check-types
-cd apps/web && pnpm check-types
+# Run type checking across all packages
+pnpm check-types
+
+# Update shared types
+pnpm --filter @repo/contracts build
+
+# Check TypeScript versions
+pnpm list typescript
 ```
 
 ## License

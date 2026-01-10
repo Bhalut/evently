@@ -36,27 +36,38 @@ Environment variables are validated at build time using Zod schemas. The applica
 
 ### Required Environment Variables
 
-| Variable              | Description          | Example                 |
-| --------------------- | -------------------- | ----------------------- |
-| `NEXT_PUBLIC_API_URL` | Backend API base URL | `http://localhost:3001` |
+| Variable              | Description          | Example                                                                       |
+| --------------------- | -------------------- | ----------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_API_URL` | Backend API base URL | `http://localhost:3001` (production) or `http://localhost:3000` (development) |
 
 ### Setup
 
-1. Copy environment template:
+Use the interactive setup wizard from the monorepo root:
 
 ```bash
-cp .env.example .env
+# From repository root
+./packages/cli/bin/evently setup
 ```
 
-2. Edit `.env` file with your configuration
+Or manually create `.env`:
 
-**Important:** All environment variables used in client-side code must be prefixed with `NEXT_PUBLIC_`.
+```bash
+# From repository root
+cp .env.example .env
+# Edit .env with NEXT_PUBLIC_API_URL
+```
+
+**Important**: All environment variables used in client-side code must be prefixed with `NEXT_PUBLIC_`.
 
 ## Running the Application
 
 ### Development Mode
 
 ```bash
+# From monorepo root
+pnpm --filter web dev
+
+# Or from apps/web directory
 cd apps/web
 pnpm dev
 ```
@@ -76,6 +87,15 @@ pnpm start
 ```
 
 The production server runs on port 3000 by default.
+
+### Docker
+
+```bash
+# From repository root - start all services
+docker compose up
+
+# Web will be available at http://localhost:3000
+```
 
 ## Available Screens
 
@@ -109,6 +129,26 @@ async function createEvent(data: CreateEventDto) {
   return event;
 }
 ```
+
+### Regenerating the API Client
+
+When the backend API changes, regenerate the client:
+
+```bash
+# From repository root
+./packages/cli/bin/evently gen api-client
+
+# Or using pnpm
+pnpm --filter client generate
+```
+
+This command:
+
+1. Fetches the OpenAPI spec from the running API
+2. Generates TypeScript types and client methods
+3. Updates `packages/client/src/`
+
+**Note**: The API server must be running for client generation.
 
 ## Styling
 
@@ -218,6 +258,18 @@ pnpm build
 
 # Check TypeScript types
 pnpm check-types
+```
+
+### Environment Variable Issues
+
+```bash
+# Verify .env file exists
+cat .env
+
+# Check environment validation
+# Look for errors in src/env.ts
+
+# Restart dev server after .env changes
 ```
 
 ### Port Already in Use
