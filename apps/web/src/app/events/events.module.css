@@ -17,6 +17,11 @@
   color: var(--color-text-main);
 }
 
+.headerActions {
+  display: flex;
+  gap: var(--spacing-md);
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -29,16 +34,32 @@
   border-radius: var(--radius-lg);
   padding: var(--spacing-lg);
   box-shadow: var(--shadow-sm);
-  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    transform var(--transition-fast),
+    box-shadow var(--transition-fast);
   cursor: pointer;
   display: flex;
   flex-direction: column;
+  position: relative;
+  text-decoration: none;
 }
 
 .card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
   border-color: var(--color-accent);
+}
+
+.cardLink {
+  text-decoration: none;
+  color: inherit;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.cardContent {
+  flex: 1;
 }
 
 .eventName {
@@ -61,6 +82,46 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  margin-bottom: var(--spacing-md);
+}
+
+.cardActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: auto;
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.cardActionBtn {
+  font-size: 0.75rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all var(--transition-fast);
+}
+
+.editBtn {
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent);
+  background: transparent;
+}
+
+.editBtn:hover {
+  background-color: var(--color-accent-subtle);
+}
+
+.deleteBtn {
+  color: var(--color-error);
+  border: 1px solid var(--color-error);
+  background: transparent;
+}
+
+.deleteBtn:hover {
+  background-color: var(--color-error-subtle);
 }
 
 .emptyState {
@@ -83,7 +144,9 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--shadow-lg);
-  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
   z-index: 100;
 }
 

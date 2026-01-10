@@ -11,6 +11,7 @@ export default function EventsPage() {
   const [events, setEvents] = useState<Event[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
+  const [isDeleting, setIsDeleting] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -31,6 +32,30 @@ export default function EventsPage() {
     fetchEvents();
   }, [router]);
 
+  const handleDelete = async (e: React.MouseEvent, id: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!confirm("Are you sure you want to delete this event?")) return;
+
+    setIsDeleting(id);
+    try {
+      await api.delete(`/events/${id}`);
+      setEvents(events.filter((e) => e.id !== id));
+    } catch (err) {
+      console.error("Failed to delete event", err);
+      alert("Failed to delete event");
+    } finally {
+      setIsDeleting(null);
+    }
+  };
+
+  const handleEdit = (e: React.MouseEvent, id: number) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push(`/events/${id}/edit`);
+  };
+
   if (isLoading) {
     return (
       <div className={styles.container}>
@@ -46,6 +71,11 @@ export default function EventsPage() {
     <div className={styles.container}>
       <div className={styles.header}>
         <h1 className={styles.title}>Events</h1>
+        <div className={styles.headerActions}>
+          <Link href="/events/new" className="btn btn-primary">
+            Add Event
+          </Link>
+        </div>
       </div>
 
       {error && (
@@ -61,22 +91,38 @@ export default function EventsPage() {
           </div>
         ) : (
           events.map((event) => (
-            <Link
-              href={`/events/${event.id}`}
-              key={event.id}
-              className={styles.card}
-            >
-              <h2 className={styles.eventName}>{event.name}</h2>
-              <div className={styles.eventDate}>
-                {new Date(event.date).toLocaleDateString(undefined, {
-                  weekday: "long",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
+            <div key={event.id} className={styles.card}>
+              <Link href={`/events/${event.id}`} className={styles.cardLink}>
+                <div className={styles.cardContent}>
+                  <h2 className={styles.eventName}>{event.name}</h2>
+                  <div className={styles.eventDate}>
+                    {new Date(event.date).toLocaleDateString(undefined, {
+                      weekday: "long",
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </div>
+                  <div className={styles.eventLocation}>📍 {event.place}</div>
+                </div>
+              </Link>
+
+              <div className={styles.cardActions}>
+                <button
+                  className={`${styles.cardActionBtn} ${styles.editBtn}`}
+                  onClick={(e) => handleEdit(e, event.id)}
+                >
+                  Edit
+                </button>
+                <button
+                  className={`${styles.cardActionBtn} ${styles.deleteBtn}`}
+                  onClick={(e) => handleDelete(e, event.id)}
+                  disabled={isDeleting === event.id}
+                >
+                  {isDeleting === event.id ? "Deleting..." : "Delete"}
+                </button>
               </div>
-              <div className={styles.eventLocation}>📍 {event.place}</div>
-            </Link>
+            </div>
           ))
         )}
       </div>

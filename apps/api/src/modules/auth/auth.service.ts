@@ -37,12 +37,12 @@ export class AuthService {
     const payload = { email: user.email, sub: user.id };
     return {
       message: 'Login successful',
-      token: this.jwtService.sign(payload),
+      access_token: this.jwtService.sign(payload),
     };
   }
 
   async register(registerDto: RegisterDto) {
-    const { email, password } = registerDto;
+    const { name, email, password } = registerDto;
 
     const existingUser = await this.usersService.findOneByEmail(email);
     if (existingUser) {
@@ -52,6 +52,7 @@ export class AuthService {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     await this.usersService.create({
+      name,
       email,
       passwordHash: hashedPassword,
     });

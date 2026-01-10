@@ -8,7 +8,14 @@ import { randomBytes } from "crypto";
 
 const program = new Command();
 
-program.name("evently").description("Evently CLI - Event Management Platform").version("0.0.1");
+program
+  .name("evently")
+  .description("Evently CLI - Event Management Platform")
+  .version("0.0.1");
+
+// API URL configuration
+const API_URL = process.env.EVENTLY_API_URL || "http://localhost:3001";
+const WEB_URL = process.env.EVENTLY_WEB_URL || "http://localhost:3000";
 
 program
   .command("setup")
@@ -48,19 +55,19 @@ program
         type: "number",
         name: "apiPort",
         message: "API Port:",
-        default: 3000,
+        default: 3001,
       },
       {
         type: "input",
         name: "dbUrl",
         message: "Database URL:",
-        default: "postgresql://app:app@localhost:5432/app",
+        default: "postgresql://postgres:password@localhost:5432/evently",
       },
       {
         type: "input",
         name: "webApiUrl",
         message: "Web API URL:",
-        default: "http://localhost:3000",
+        default: "http://localhost:3001",
       },
       {
         type: "confirm",
@@ -143,9 +150,11 @@ NEXT_PUBLIC_API_URL="${answers.webApiUrl}"
 
         console.log(chalk.green.bold("\nSetup complete!\n"));
         console.log(chalk.cyan("Next steps:"));
-        console.log(chalk.white("  1. Run: pnpm dev (start development servers)"));
-        console.log(chalk.white("  2. API will be at: http://localhost:" + answers.apiPort));
-        console.log(chalk.white("  3. Web will be at: http://localhost:3000\n"));
+        console.log(
+          chalk.white("  1. Run: pnpm dev (start development servers)")
+        );
+        console.log(chalk.white("  2. API will be at: " + API_URL));
+        console.log(chalk.white("  3. Web will be at: " + WEB_URL + "\n"));
       } catch (error) {
         console.error(chalk.red("\nFailed to start services:"), error);
       }
@@ -233,9 +242,7 @@ program
         });
         console.log(chalk.green("Client generated successfully"));
       } catch (e) {
-        console.error(
-          chalk.red("Failed to generate client. Is API running?")
-        );
+        console.error(chalk.red("Failed to generate client. Is API running?"));
       }
     } else if (type === "module") {
       const args = process.argv.slice(4);
@@ -290,10 +297,12 @@ program
       // Check if API is running by testing health endpoint
       console.log(chalk.blue("Checking API server..."));
       try {
-        await execa("curl", ["-f", "-s", "http://localhost:3000/health"]);
+        await execa("curl", ["-f", "-s", `${API_URL}/health`]);
       } catch {
         console.log(chalk.yellow("API not running. Starting API server..."));
-        console.log(chalk.yellow("Please start the API with: pnpm --filter api dev"));
+        console.log(
+          chalk.yellow("Please start the API with: pnpm --filter api dev")
+        );
         console.log(chalk.yellow("Then run the demo again."));
         return;
       }
@@ -304,7 +313,7 @@ program
       console.log(chalk.blue("=== Health Check ==="));
       const { stdout: healthOutput } = await execa("curl", [
         "-s",
-        "http://localhost:3000/health",
+        `${API_URL}/health`,
       ]);
       console.log(healthOutput);
       console.log("");
@@ -323,7 +332,7 @@ program
         "-s",
         "-X",
         "POST",
-        "http://localhost:3000/events",
+        `${API_URL}/events`,
         "-H",
         "Content-Type: application/json",
         "-d",
@@ -344,7 +353,7 @@ program
         "-s",
         "-X",
         "POST",
-        "http://localhost:3000/events",
+        `${API_URL}/events`,
         "-H",
         "Content-Type: application/json",
         "-d",
@@ -358,7 +367,7 @@ program
       console.log(chalk.blue("=== Listing All Events ==="));
       const { stdout: listOutput } = await execa("curl", [
         "-s",
-        "http://localhost:3000/events",
+        `${API_URL}/events`,
       ]);
       console.log(listOutput);
       console.log("");
@@ -367,7 +376,7 @@ program
       console.log(chalk.blue("=== Get Single Event (ID: 1) ==="));
       const { stdout: getOutput } = await execa("curl", [
         "-s",
-        "http://localhost:3000/events/1",
+        `${API_URL}/events/1`,
       ]);
       console.log(getOutput);
       console.log("");
@@ -385,7 +394,7 @@ program
         "-s",
         "-X",
         "PUT",
-        "http://localhost:3000/events/1",
+        `${API_URL}/events/1`,
         "-H",
         "Content-Type: application/json",
         "-d",
@@ -399,7 +408,7 @@ program
       const { stdout: headersOutput } = await execa("curl", [
         "-I",
         "-s",
-        "http://localhost:3000/health",
+        `${API_URL}/health`,
       ]);
       const relevantHeaders = headersOutput
         .split("\n")
@@ -413,8 +422,8 @@ program
 
       // Show API documentation
       console.log(chalk.blue("=== API Documentation ==="));
-      console.log("Swagger UI: http://localhost:3000/docs");
-      console.log("OpenAPI JSON: http://localhost:3000/docs-json");
+      console.log(`Swagger UI: ${API_URL}/docs`);
+      console.log(`OpenAPI JSON: ${API_URL}/docs-json`);
       console.log("");
 
       console.log(chalk.green.bold("Demo completed successfully\n"));
@@ -426,9 +435,9 @@ program
       console.log("- All features working correctly");
       console.log("");
       console.log("Access the application:");
-      console.log("- API: http://localhost:3000");
-      console.log("- Docs: http://localhost:3000/docs");
-      console.log("- Health: http://localhost:3000/health");
+      console.log(`- API: ${API_URL}`);
+      console.log(`- Docs: ${API_URL}/docs`);
+      console.log(`- Health: ${API_URL}/health`);
       console.log("");
     } catch (error) {
       const message = error instanceof Error ? error.message : String(error);

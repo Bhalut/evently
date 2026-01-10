@@ -38,6 +38,15 @@
   --color-accent: var(--color-indigo-500);
   --color-accent-hover: var(--color-indigo-600);
   --color-accent-fg: #ffffff;
+  --color-accent-subtle: var(--color-indigo-100);
+
+  /* Semantic Aliases for Components */
+  --color-text-main: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+  --color-surface: var(--bg-surface);
+  --color-border: var(--border-default);
+  --color-border-subtle: var(--color-slate-100);
+  --color-error-subtle: rgba(239, 68, 68, 0.1);
 
   /* --- Spacing System --- */
   --spacing-xs: 0.5rem;   /* 8px */
@@ -80,6 +89,15 @@
     /* Slightly lighter accent for better contrast on dark */
     --color-accent: #818cf8; 
     --color-accent-hover: #a5b4fc;
+    --color-accent-subtle: rgba(129, 140, 248, 0.2);
+
+    /* Semantic Aliases for Components (Dark Mode) */
+    --color-text-main: var(--text-primary);
+    --color-text-muted: var(--text-secondary);
+    --color-surface: var(--bg-surface);
+    --color-border: var(--border-default);
+    --color-border-subtle: var(--color-slate-700);
+    --color-error-subtle: rgba(239, 68, 68, 0.2);
     
     --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
     --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);

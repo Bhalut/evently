@@ -52,12 +52,16 @@ export default function LoginPage() {
         throw new Error("No access token received");
       }
     } catch (err: unknown) {
+      console.error("Login error:", err);
       const apiError = err as ApiError;
-      setGeneralError(
-        Array.isArray(apiError.message)
-          ? apiError.message[0] || "An error occurred"
-          : apiError.message || "Invalid email or password"
-      );
+      const message =
+        typeof apiError === "string"
+          ? apiError
+          : Array.isArray(apiError.message)
+            ? apiError.message[0]
+            : apiError.message;
+
+      setGeneralError(message || "Invalid email or password");
     } finally {
       setIsLoading(false);
     }

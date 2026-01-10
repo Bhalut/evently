@@ -63,12 +63,16 @@ export default function RegisterPage() {
         router.push("/login");
       }
     } catch (err: unknown) {
+      console.error("Registration error:", err);
       const apiError = err as ApiError;
-      setGeneralError(
-        Array.isArray(apiError.message)
-          ? apiError.message[0] || "An error occurred"
-          : apiError.message || "Registration failed. Please try again."
-      );
+      const message =
+        typeof apiError === "string"
+          ? apiError
+          : Array.isArray(apiError.message)
+            ? apiError.message[0]
+            : apiError.message;
+
+      setGeneralError(message || "Registration failed. Please try again.");
     } finally {
       setIsLoading(false);
     }
