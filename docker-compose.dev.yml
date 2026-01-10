@@ -1,0 +1,31 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: base
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/apps/api/node_modules
+    command: sh -c "pnpm install && pnpm --filter api start:dev"
+    environment:
+      NODE_ENV: development
+
+  web:
+    build:
+      context: .
+      dockerfile: apps/web/Dockerfile
+      target: base
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - ./:/app
+      - /app/node_modules
+      - /app/apps/web/node_modules
+      - /app/apps/web/.next
+    command: sh -c "pnpm install && pnpm --filter web dev"
+    environment:
+      NODE_ENV: development
