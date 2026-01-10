@@ -31,8 +31,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         : 'Internal server error';
 
     const message =
-      typeof exceptionResponse === 'object' && exceptionResponse !== null
-        ? (exceptionResponse as any).message || exceptionResponse
+      typeof exceptionResponse === 'object' &&
+      exceptionResponse !== null &&
+      'message' in exceptionResponse
+        ? (exceptionResponse as { message: unknown }).message
         : exceptionResponse;
 
     this.logger.error(
