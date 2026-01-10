@@ -44,7 +44,7 @@ Evently is a production-ready event management platform featuring a NestJS backe
 1. Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/yourusername/evently.git
+git clone https://github.com/bhalut/evently.git
 cd evently
 pnpm install
 ```
@@ -52,7 +52,7 @@ pnpm install
 2. Run the interactive setup wizard:
 
 ```bash
-./packages/cli/bin/evently setup
+./packages/cli/bin/evently.js setup
 ```
 
 The setup wizard will:
@@ -76,10 +76,10 @@ Once running, the application is available at:
 | Service           | URL                             | Description           |
 | ----------------- | ------------------------------- | --------------------- |
 | Web Application   | http://localhost:3000           | Next.js frontend      |
-| API Server        | http://localhost:3000           | NestJS backend        |
-| API Documentation | http://localhost:3000/docs      | Swagger UI            |
-| API Specification | http://localhost:3000/docs-json | OpenAPI JSON          |
-| Health Check      | http://localhost:3000/health    | Service health status |
+| API Server        | http://localhost:3001           | NestJS backend        |
+| API Documentation | http://localhost:3001/docs      | Swagger UI            |
+| API Specification | http://localhost:3001/docs-json | OpenAPI JSON          |
+| Health Check      | http://localhost:3001/health    | Service health status |
 
 ### Manual Setup (Alternative)
 
@@ -156,22 +156,24 @@ The Evently CLI provides utilities for common development tasks:
 
 ```bash
 # System health check
-./packages/cli/bin/evently doctor
+./packages/cli/bin/evently.js doctor
+
+# Project status overview
+./packages/cli/bin/evently.js status
 
 # Interactive setup wizard
-./packages/cli/bin/evently setup
+./packages/cli/bin/evently.js setup
 
 # Database operations
-./packages/cli/bin/evently db migrate    # Run migrations
-./packages/cli/bin/evently db reset      # Reset database
-./packages/cli/bin/evently db seed       # Seed initial data
+./packages/cli/bin/evently.js db migrate    # Run migrations
+./packages/cli/bin/evently.js db reset      # Reset database
 
 # Code generation
-./packages/cli/bin/evently gen api-client       # Update API client
-./packages/cli/bin/evently gen module <name>    # Scaffold new module
+./packages/cli/bin/evently.js gen api-client       # Update API client
+./packages/cli/bin/evently.js gen module <name>    # Scaffold new module
 
 # Demo and testing
-./packages/cli/bin/evently demo         # Run automated demonstration
+./packages/cli/bin/evently.js demo         # Run automated demonstration
 ```
 
 ## Architecture

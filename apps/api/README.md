@@ -52,7 +52,7 @@ Use the interactive setup wizard from the monorepo root:
 
 ```bash
 # From repository root
-./packages/cli/bin/evently setup
+./packages/cli/bin/evently.js setup
 ```
 
 Or manually create `.env`:
@@ -172,7 +172,7 @@ cd apps/api
 pnpm migration:run
 
 # Or using CLI
-./packages/cli/bin/evently db migrate
+./packages/cli/bin/evently.js db migrate
 ```
 
 #### Generating Migrations

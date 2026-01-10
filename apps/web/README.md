@@ -46,7 +46,7 @@ Use the interactive setup wizard from the monorepo root:
 
 ```bash
 # From repository root
-./packages/cli/bin/evently setup
+./packages/cli/bin/evently.js setup
 ```
 
 Or manually create `.env`:
@@ -136,7 +136,7 @@ When the backend API changes, regenerate the client:
 
 ```bash
 # From repository root
-./packages/cli/bin/evently gen api-client
+./packages/cli/bin/evently.js gen api-client
 
 # Or using pnpm
 pnpm --filter client generate
@@ -254,7 +254,7 @@ pnpm build
 
 ```bash
 # Regenerate API client
-./packages/cli/bin/evently gen api-client
+./packages/cli/bin/evently.js gen api-client
 
 # Check TypeScript types
 pnpm check-types
