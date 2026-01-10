@@ -1,0 +1,153 @@
+.searchContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  padding: 0.25rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: 2.5rem;
+  overflow: hidden;
+}
+
+.searchContainer.expanded {
+  width: 280px;
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-accent);
+}
+
+.searchButton {
+  flex-shrink: 0;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.searchButton:hover {
+  background: var(--color-accent-subtle);
+}
+
+.searchIcon {
+  width: 1.25rem;
+  height: 1.25rem;
+  color: var(--color-text-muted);
+  transition: color 0.2s ease;
+}
+
+.searchContainer.expanded .searchIcon {
+  color: var(--color-accent);
+}
+
+.searchInput {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-size: 0.9rem;
+  color: var(--color-text-main);
+  width: 0;
+  padding: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.searchContainer.expanded .searchInput {
+  width: 100%;
+  padding: 0 var(--spacing-sm);
+  opacity: 1;
+}
+
+.searchInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.searchInput:focus {
+  outline: none;
+}
+
+.clearButton {
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: var(--color-border);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.25rem;
+  transition: all 0.2s ease;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.clearButton svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--color-text-muted);
+}
+
+.clearButton:hover {
+  background: var(--color-error);
+}
+
+.clearButton:hover svg {
+  color: white;
+}
+
+/* Filter Chips */
+.filterChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+}
+
+.filterChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-main);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.filterChip:hover {
+  border-color: var(--color-accent);
+  background: var(--color-accent-subtle);
+}
+
+.filterChip.active {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  color: white;
+}
+
+.checkIcon {
+  width: 0.875rem;
+  height: 0.875rem;
+  animation: checkPop 0.3s ease-out;
+}
+
+@keyframes checkPop {
+  from { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  to { transform: scale(1); }
+}

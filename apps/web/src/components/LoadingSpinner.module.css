@@ -1,0 +1,135 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+}
+
+/* Spinner with rotating rings */
+.spinner {
+  position: relative;
+}
+
+.sm { width: 1.5rem; height: 1.5rem; }
+.md { width: 2.5rem; height: 2.5rem; }
+.lg { width: 4rem; height: 4rem; }
+
+.ring {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: var(--color-accent);
+  animation: spin 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+}
+
+.ring:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.ring:nth-child(2) {
+  animation-delay: -0.3s;
+  opacity: 0.8;
+}
+
+.ring:nth-child(3) {
+  animation-delay: -0.15s;
+  opacity: 0.6;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.text {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Skeleton styles */
+.skeletonCard {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.skeletonBadge {
+  width: 40%;
+  height: 1.5rem;
+  border-radius: var(--radius-full);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.skeletonTitle {
+  width: 80%;
+  height: 1.25rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite 0.1s;
+}
+
+.skeletonText {
+  width: 60%;
+  height: 1rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite 0.2s;
+}
+
+.skeletonActions {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+  padding-top: var(--spacing-md);
+  border-top: 1px solid var(--color-border-subtle);
+}
+
+.skeletonButton {
+  flex: 1;
+  height: 2rem;
+  border-radius: var(--radius-md);
+  background: linear-gradient(
+    90deg,
+    var(--color-border) 25%,
+    var(--color-surface) 50%,
+    var(--color-border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite 0.3s;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
