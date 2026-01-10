@@ -3,10 +3,23 @@
   "version": "0.0.0",
   "private": true,
   "bin": {
-    "evently": "./bin/run"
+    "evently": "./bin/evently"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --format cjs,esm --dts",
+    "dev": "tsup src/index.ts --format cjs,esm --watch --dts",
+    "start": "node ./bin/evently"
+  },
+  "dependencies": {
+    "chalk": "^4.1.2",
+    "commander": "^11.0.0",
+    "execa": "^5.1.1",
+    "inquirer": "^8.2.5"
   },
   "devDependencies": {
-    "typescript": "^5.9.2",
-    "@repo/config": "workspace:*"
+    "@types/inquirer": "^8.2.5",
+    "@types/node": "^20.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
   }
 }
