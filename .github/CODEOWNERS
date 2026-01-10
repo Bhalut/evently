@@ -1,0 +1,22 @@
+# Code Owners for Evently
+# These owners will be automatically requested for review on PRs
+
+# Default owners for everything
+* @bhalut
+
+# API application
+/apps/api/ @bhalut
+
+# Web application
+/apps/web/ @bhalut
+
+# Shared packages
+/packages/ @bhalut
+
+# Infrastructure and configuration
+/docker-compose*.yml @bhalut
+/.github/ @bhalut
+
+# Documentation
+/docs/ @bhalut
+README.md @bhalut
