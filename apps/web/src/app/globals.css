@@ -75,7 +75,7 @@
 
 /* --- Dark Mode Overrides --- */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg-default: var(--color-slate-900);
     --bg-surface: var(--color-slate-800);
     --bg-input: var(--color-slate-900);
@@ -104,6 +104,35 @@
     
     --focus-ring: 0 0 0 3px rgba(99, 102, 241, 0.3);
   }
+}
+
+/* Explicit dark theme override */
+[data-theme="dark"] {
+  --bg-default: var(--color-slate-900);
+  --bg-surface: var(--color-slate-800);
+  --bg-input: var(--color-slate-900);
+
+  --text-primary: var(--color-slate-50);
+  --text-secondary: var(--color-slate-300);
+
+  --border-default: var(--color-slate-700);
+  --border-input: var(--color-slate-700);
+  
+  --color-accent: #818cf8; 
+  --color-accent-hover: #a5b4fc;
+  --color-accent-subtle: rgba(129, 140, 248, 0.2);
+
+  --color-text-main: var(--text-primary);
+  --color-text-muted: var(--text-secondary);
+  --color-surface: var(--bg-surface);
+  --color-border: var(--border-default);
+  --color-border-subtle: var(--color-slate-700);
+  --color-error-subtle: rgba(239, 68, 68, 0.2);
+  
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  
+  --focus-ring: 0 0 0 3px rgba(99, 102, 241, 0.3);
 }
 
 /* =========================================

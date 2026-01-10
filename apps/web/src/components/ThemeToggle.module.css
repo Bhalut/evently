@@ -1,0 +1,70 @@
+.toggle {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-md);
+  transition: all 0.3s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-accent);
+}
+
+.toggle:active {
+  transform: scale(0.95);
+}
+
+.iconContainer {
+  position: relative;
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.icon {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.sunIcon {
+  color: #f59e0b;
+  transform: rotate(-90deg) scale(0);
+  opacity: 0;
+}
+
+.sunIcon.active {
+  transform: rotate(0) scale(1);
+  opacity: 1;
+}
+
+.moonIcon {
+  color: #6366f1;
+  transform: rotate(90deg) scale(0);
+  opacity: 0;
+}
+
+.moonIcon.active {
+  transform: rotate(0) scale(1);
+  opacity: 1;
+}
+
+/* Pulse animation on toggle */
+.toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-accent-subtle);
+}
